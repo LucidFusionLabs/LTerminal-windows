@@ -1,0 +1,42 @@
+# $Id$
+
+version: '{build}'
+clone_depth: 10
+image:
+- Visual Studio 2017
+
+configuration:
+- Release
+
+platform:
+- Win32
+
+environment:
+  matrix:
+  - { comp: 141, xp: _xp }
+ 
+init:
+- if "%VS150COMNTOOLS%"=="" set "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\"
+- if %platform:~-2%==64 (set arch=amd64) else (set arch=amd64_x86)
+- if %comp% LSS 120 if %platform:~-2%==64 (set arch=x86_amd64) else (set arch=x86)
+- call set "vcvarsall=%%VS%comp%COMNTOOLS%%..\..\VC\vcvarsall.bat"
+- if %comp%==141 set "vcvarsall=%VS150COMNTOOLS%..\..\VC\Auxiliary\Build\vcvarsall.bat"
+- call "%vcvarsall%" %arch%
+- echo %APPVEYOR_BUILD_WORKER_IMAGE% %platform% v%comp%%xp% %configuration% %arch%
+- if %comp%==110 (set "gen=11 2012" & set "tool=v%comp%%xp%")
+- if %comp%==120 (set "gen=12 2013" & set "tool=v%comp%%xp%,host=x64")
+- if %comp%==140 (set "gen=14 2015" & set "tool=v%comp%%xp%,host=x64")
+- if %comp%==141 (set "gen=15 2017" & set "tool=v%comp%%xp%,host=x64")
+- if %platform:~-2%==64 set "gen=%gen% Win64"
+
+before_build:
+- cd %APPVEYOR_BUILD_FOLDER%
+- git submodule update --init --recursive LTerminal
+- git submodule update --init core
+- cd core
+- git submodule update --init --recursive CMake imports/cmake-precompiled-header imports/OpenCV imports/glew
+- git submodule update --init --recursive imports/ref10_extract imports/bcrypt_pbkdf imports/openssl imports/sqlcipher
+
+build_script:
+- mkdir build & cd build
+- cmake -T %tool% -G "Visual Studio %gen%" -DCMAKE_BUILD_TYPE=Release ..
