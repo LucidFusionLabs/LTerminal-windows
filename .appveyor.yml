@@ -42,3 +42,10 @@ build_script:
 - mkdir build & cd build
 - cmake -T %tool% -G "Visual Studio %gen%" -DCMAKE_BUILD_TYPE=Release ..
 - devenv.com /Build Release Project.sln /project "LTerminal"
+
+on_failure:
+- echo Failure
+- type C:\projects\lterminal-windows\build\core\imports\sqlcipher\src\sqlcipher-stamp\sqlcipher-build-*.log
+
+on_success:
+- echo Success
