@@ -22,12 +22,16 @@ init:
 - call set "vcvarsall=%%VS%comp%COMNTOOLS%%..\..\VC\vcvarsall.bat"
 - if %comp%==141 set "vcvarsall=%VS150COMNTOOLS%..\..\VC\Auxiliary\Build\vcvarsall.bat"
 - call "%vcvarsall%" %arch%
-- echo %APPVEYOR_BUILD_WORKER_IMAGE% %platform% v%comp%%xp% %configuration% %arch%
 - if %comp%==110 (set "gen=11 2012" & set "tool=v%comp%%xp%")
 - if %comp%==120 (set "gen=12 2013" & set "tool=v%comp%%xp%,host=x64")
 - if %comp%==140 (set "gen=14 2015" & set "tool=v%comp%%xp%,host=x64")
 - if %comp%==141 (set "gen=15 2017" & set "tool=v%comp%%xp%,host=x64")
 - if %platform:~-2%==64 set "gen=%gen% Win64"
+- echo %APPVEYOR_BUILD_WORKER_IMAGE% %platform% v%comp%%xp% %configuration% %arch%
+- tclsh85 -v
+- tclsh -v
+- where tclsh85
+- where tclsh
 
 before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
@@ -45,7 +49,10 @@ build_script:
 
 on_failure:
 - echo Failure
+- type C:\projects\lterminal-windows\build\core\imports\sqlcipher\src\sqlcipher-stamp\sqlcipher-configure-*.log
 - type C:\projects\lterminal-windows\build\core\imports\sqlcipher\src\sqlcipher-stamp\sqlcipher-build-*.log
 
 on_success:
 - echo Success
+- CertUtil -hashfile LTerminal\Release\LTerminal-render-sandbox.exe md5
+
