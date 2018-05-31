@@ -35,7 +35,7 @@ before_build:
 - git submodule update --init core
 - cd core
 - git submodule update --init --recursive CMake imports/cmake-precompiled-header imports/OpenCV imports/glew imports/flatbuffers imports/giflib
-- git submodule update --init --recursive imports/ref10_extract imports/bcrypt_pbkdf imports/openssl imports/sqlcipher imports/ActiveTcl-for-Windows
+- git submodule update --init --recursive imports/ref10_extract imports/bcrypt_pbkdf imports/openssl imports/sqlcipher imports/windows/ActiveTcl-for-Windows
 
 build_script:
 - cd %APPVEYOR_BUILD_FOLDER%
