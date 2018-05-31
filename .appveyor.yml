@@ -35,7 +35,7 @@ before_build:
 - git submodule update --init core
 - cd core
 - git submodule update --init --recursive CMake imports/cmake-precompiled-header imports/OpenCV imports/glew imports/flatbuffers imports/giflib
-- git submodule update --init --recursive imports/ref10_extract imports/bcrypt_pbkdf imports/openssl imports/sqlcipher
+- git submodule update --init --recursive imports/ref10_extract imports/bcrypt_pbkdf imports/openssl imports/sqlcipher imports/ActiveTcl-for-Windows
 
 build_script:
 - cd %APPVEYOR_BUILD_FOLDER%
@@ -45,7 +45,6 @@ build_script:
 
 on_failure:
 - echo Failure
-- type C:\projects\lterminal-windows\build\core\imports\sqlcipher\src\sqlcipher-stamp\sqlcipher-configure-*.log
 - type C:\projects\lterminal-windows\build\core\imports\sqlcipher\src\sqlcipher-stamp\sqlcipher-build-*.log
 
 on_success:
