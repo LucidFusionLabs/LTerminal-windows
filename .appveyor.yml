@@ -28,10 +28,6 @@ init:
 - if %comp%==141 (set "gen=15 2017" & set "tool=v%comp%%xp%,host=x64")
 - if %platform:~-2%==64 set "gen=%gen% Win64"
 - echo %APPVEYOR_BUILD_WORKER_IMAGE% %platform% v%comp%%xp% %configuration% %arch%
-- tclsh85 -v
-- tclsh -v
-- where tclsh85
-- where tclsh
 
 before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
@@ -54,5 +50,4 @@ on_failure:
 
 on_success:
 - echo Success
-- CertUtil -hashfile LTerminal\Release\LTerminal-render-sandbox.exe md5
-
+- CertUtil -hashfile LTerminal\Release\LTerminal.exe md5
